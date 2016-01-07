@@ -9,11 +9,13 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author nekosaur
+ * Main class
+ * 
+ * @author Albert Kaaman
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         if (args.length != 3) {
             showHelp();
             System.exit(1);
@@ -30,33 +32,37 @@ public class Main {
             System.exit(1);
         }
 
-        switch (args[0]) {
-            case "mtg2png":
-                img = ImageIO.read(input);
-                MegatronIO.write(img, output);
-                break;
-            case "mtg2cif":
-                img = MegatronIO.read(input);
-                CompressIO.write(img, output);
-                break;
-            case "cif2png":
-                img = CompressIO.read(input);
-                ImageIO.write(img, "PNG", output);
-                break;
-            case "cif2mtg":
-                img = CompressIO.read(input);
-                MegatronIO.write(img, output);
-                break;
-            case "png2mtg":
-                img = ImageIO.read(input);
-                MegatronIO.write(img, output);
-                break;
-            case "png2cif":
-                img = ImageIO.read(input);
-                CompressIO.write(img, output);
-                break;
-            default:
-                showHelp();
+        try {
+        	switch (args[0]) {
+	            case "mtg2png":
+	            	img = MegatronIO.read(input);
+	                ImageIO.write(img, "PNG", output);
+	                break;
+	            case "mtg2cif":
+	                img = MegatronIO.read(input);
+	                CompressIO.write(img, output);
+	                break;
+	            case "cif2png":
+	                img = CompressIO.read(input);
+	                ImageIO.write(img, "PNG", output);
+	                break;
+	            case "cif2mtg":
+	                img = CompressIO.read(input);
+	                MegatronIO.write(img, output);
+	                break;
+	            case "png2mtg":
+	                img = ImageIO.read(input);
+	                MegatronIO.write(img, output);
+	                break;
+	            case "png2cif":
+	                img = ImageIO.read(input);
+	                CompressIO.write(img, output);
+	                break;
+	            default:
+	                showHelp();
+	        }
+        } catch (IOException ex) {
+        	 ex.printStackTrace();
         }
 
     }
@@ -73,10 +79,9 @@ public class Main {
                     + "png2cif : Converts PNG file to CIF\n"
                     + "png2mtg : Converts PNG file to MTG\n"
                     + "\n"
-                    + "Both input and output are paths relative to current directory"
+                    + "Both input and output are paths relative to current directory.\n"
                     + "\n"
                     + "Have fun!";
-
 
         System.err.println(help);
 

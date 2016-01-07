@@ -1,37 +1,37 @@
 package mah.da357a.io;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 /**
- * @author nekosaur
+ * IO class for reading and writing compressed image files
+ * 
+ * @author Albert Kaaman & Filip Harald
  */
 public class CompressIO {
 
-    private final byte[] header = "QWERTY".getBytes();
+    private final byte[] HEADER = "QWERTY".getBytes();
 
+    @SuppressWarnings("serial")
     public final static class InvalidCompressFileException extends IOException { }
 
     /**
-     *
-     * @param img
-     * @param outputFile
-     * @return
+     * Writes image to disk.
+     * 
+     * @param img Image to write
+     * @param outputFile File to write image to
+     * @return True if success
      */
     public static boolean write(BufferedImage img, File outputFile) throws IOException {
         return false;
     }
 
     /**
-     *
-     * @param inputFile
-     * @return
+     * Reads an image from file on disk.
+     * 
+     * @param inputFile File to read from
+     * @return Image read from file
      */
     public static BufferedImage read(File inputFile) throws IOException {
         return null;
