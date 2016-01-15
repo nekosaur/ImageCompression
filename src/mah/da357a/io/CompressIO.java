@@ -64,4 +64,20 @@ public class CompressIO {
         
         return img;
     }
+    
+    /**
+     * @param image
+     * @return
+     */
+    private static byte[] compress(BufferedImage image){
+		return null;
+    }
+    
+    /**
+     * @param bytes
+     * @return
+     */
+    private static BufferedImage decompress(byte[] bytes){
+    	return null;
+    }
 }
