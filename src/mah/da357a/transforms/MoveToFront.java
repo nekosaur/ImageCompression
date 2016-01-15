@@ -1,17 +1,46 @@
 package mah.da357a.transforms;
 
-public class MoveToFront implements Transform{
+/**
+ * Move-to-Front transform
+ *
+ * @author Filip Harald & Albert Kaaman
+ */
+public class MoveToFront {
 
-	@Override
 	public byte[] apply(byte[] bytes) {
-		// TODO Auto-generated method stub
-		return null;
+
+		BitArray bits = new BitArray(bytes);
+
+		/*
+		for (int i = 0; i < bits.getLength(); i++)
+			System.out.print(bits.getBit(i) == true ? 1 : 0);
+		System.out.println();
+		*/
+
+		boolean zeroIsFront = true;
+
+		for (int i = 0; i < bits.getLength(); i++) {
+
+			boolean bit = bits.getBit(i);
+
+			bits.setBit(i, zeroIsFront ? bit : !bit);
+
+			zeroIsFront = zeroIsFront ? !bit : true;
+
+		}
+
+		/*
+		for (int i = 0; i < bits.getLength(); i++)
+			System.out.print(bits.getBit(i) == true ? 1 : 0);
+		System.out.println();
+		*/
+
+		return bits.toByteArray();
+
 	}
 
-	@Override
 	public byte[] revert(byte[] bytes) {
-		// TODO Auto-generated method stub
-		return null;
+		return apply(bytes);
 	}
 
 }

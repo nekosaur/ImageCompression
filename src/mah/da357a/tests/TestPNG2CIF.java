@@ -12,10 +12,13 @@ public class TestPNG2CIF {
 	public static void main(String[] args) {
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("resources/test/tmp.png"));
+			BufferedImage img = ImageIO.read(new File("resources/cartoon.png"));
+
+			System.out.println(img.getType());
+			System.out.println();
 			
-			CompressIO.write(img, new File("resources/output/tmp.cif"));
-			
+			CompressIO.write(img, new File("resources/cartoon.cif"));
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

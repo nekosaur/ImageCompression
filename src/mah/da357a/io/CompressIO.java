@@ -1,6 +1,10 @@
 package mah.da357a.io;
 
+import mah.da357a.transforms.MoveToFront;
+import mah.da357a.transforms.RunLengthEncode;
+
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -40,6 +44,12 @@ public class CompressIO {
 	        // Write compress header
 	        out.write(HEADER);
 
+            // Write width and length
+            write4bytes(img.getWidth(), out);
+            write4bytes(img.getHeight(), out);
+
+            byte[] array = compress(img);
+
         }
         
         return true;
@@ -70,7 +80,12 @@ public class CompressIO {
      * @return
      */
     private static byte[] compress(BufferedImage image){
-		return null;
+        byte[] array = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+
+        array = new MoveToFront().apply(array);
+
+
+        return array;
     }
     
     /**
@@ -79,5 +94,19 @@ public class CompressIO {
      */
     private static BufferedImage decompress(byte[] bytes){
     	return null;
+    }
+
+    /**
+     * Writes an int as 4 bytes, big endian.
+     *
+     * @param v Int to write
+     * @param out Stream to write int to
+     * @throws IOException
+     */
+    private static void write4bytes(int v, OutputStream out) throws IOException {
+        out.write((v >>> 3*8));
+        out.write((v >>> 2*8) & 0xFF);
+        out.write((v >>> 1*8) & 0xFF);
+        out.write((v >>> 0*8) & 0xFF);
     }
 }

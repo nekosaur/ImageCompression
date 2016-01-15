@@ -1,15 +1,13 @@
 package mah.da357a.transforms;
 
-public class RunLengthEncode implements Transform{
+public class RunLengthEncode {
 
-	@Override
-	public byte[] apply(byte[] bytes) {
+	public static byte[] apply(byte[] bytes) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public byte[] revert(byte[] bytes) {
+	public static byte[] revert(byte[] bytes) {
 		// TODO Auto-generated method stub
 		return null;
 	}
