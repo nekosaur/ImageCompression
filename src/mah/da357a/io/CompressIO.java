@@ -38,6 +38,9 @@ public class CompressIO {
         int[] pxl = new int[3];
         Raster imgRaster  = img.getRaster();
         */
+
+        System.out.println(img.getWidth());
+        System.out.println(img.getHeight());
         
         try (OutputStream out = new FileOutputStream(outputFile)) {
 
@@ -49,6 +52,10 @@ public class CompressIO {
             write4bytes(img.getHeight(), out);
 
             byte[] array = compress(img);
+
+            for (int i = 0; i < array.length; i++) {
+                out.write(array[i]);
+            }
 
         }
         
@@ -84,6 +91,13 @@ public class CompressIO {
 
         array = new MoveToFront().apply(array);
 
+        MoveToFront mtf = new MoveToFront();
+
+        array = mtf.apply(array);
+
+        RunLengthEncode rle = new RunLengthEncode();
+
+        array = rle.apply(array);
 
         return array;
     }
