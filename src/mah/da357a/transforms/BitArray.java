@@ -10,10 +10,10 @@ package mah.da357a.transforms;
 public class BitArray {
 
     private byte bitX8[] = null;
+    private int index = 0;
 
     public BitArray(int size) {
         //bitX8 = new byte[size / 8 + (size % 8 == 0 ? 0 : 1)];
-
         bitX8 = new byte[size];
     }
 
@@ -22,6 +22,10 @@ public class BitArray {
         for (int i = 0; i < array.length; i++) {
             bitX8[i] = array[i];
         }
+    }
+    
+    public void setPosition(int index) {
+    	this.index = index;
     }
 
     public boolean getBit(int pos) {
@@ -37,6 +41,33 @@ public class BitArray {
             b8 &= (255 - posBit);
         }
         bitX8[pos / 8] = b8;
+    }
+    
+    public void writeByte(int value) {
+    	/*
+    	for (int i = 8; i > 0; i--) {
+            int b = (value >>> (i - 1)) & 0x1;
+
+            setBit(index + (8 - i), b == 1 ? true : false);
+        }*/
+    	byte b = (byte)value;
+    	bitX8[index++] = b;
+    	
+    }
+    
+    public void writeInt(int value) {
+    	/*
+    	for (int i = 32; i > 0; i--) {
+            int b = (value >>> (i - 1)) & 0x1;
+
+            setBit(index + (32 - i), b == 1 ? true : false);
+        }*/
+    	
+    	for (int i = 4; i > 0; i--) {
+    		byte b = (byte)((value >>> ((i - 1) * 8)) & 0xFF);
+    		bitX8[index++] = b;
+    	}    	
+    	
     }
 
     public void write(int pos, byte value) {

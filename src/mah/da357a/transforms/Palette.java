@@ -1,5 +1,7 @@
 package mah.da357a.transforms;
 
+import mah.da357a.ImageUtils;
+
 public class Palette {
 	private final static int[] palette = new int[]{
 			   0x000000  , 0x800000  , 0x008000  , 0x808000  , 0x000080  , 0x800080  , 0x008080  , 0xc0c0c0
@@ -46,19 +48,47 @@ public class Palette {
 			, 0xbcbcbc , 0xc6c6c6 , 0xd0d0d0 , 0xdadada , 0xe4e4e4 , 0xeeeeee
 	};
 	
-	public int getCorrespondingColorIndex(int r, int g, int b){
+	public static int[] getPalette() {
+		return palette;
+	}
+	
+	public static int getCorrespondingColorIndex(int r, int g, int b){
 		int index = -1;
 		if(r == 0 && g == 0 && b == 0){
 			index = 0;
 		}else if(r == g && r == b){//All colors have same value, this means it's grayscale. (indexes 232-255, 24 different colors)			
-			index = 232 + ((r + g + b)/ 765*24); 
+			index = 232 + (int)(((double)(r + g + b)/765)*24); 
 		}else{ //not grayscale. (indexes 16-231, 216 different colors)
-			index = 16 + ((r + g + b)/ 765*216);
+			
+			/**
+			 * IDE!
+			 * 
+			 * Om vi kan utröna den exakta färgen från färgpaletten genom att göra högst 18st distansuträkningar mot de 6+6+6 olika färgvärdena
+			 * i dom individuella färgkanalerna, så kan vi sedan räkna ut index genom följande uträkning
+			 * 
+			 * röttIndex * 36 + gröntIndex * 6 + blåttIndex (+16 pga palett) (+- 1 eller nått)
+			 * 
+			 * där index är kopplade till de avgränsade färgerna (00, 57, 87, etc.. FF)
+			 * 
+			 * 
+			 */
+			
+			
+			//index = 16 + (int)(((double)(r + g + b)/ 765)*216);
+			int c = ImageUtils.toInt(r, g, b);
+			double minDistance = Double.MAX_VALUE;
+			for (int p = 0; p < palette.length; p++) {
+				double d = ImageUtils.distanceInLAB(palette[p], c);
+				if (d < minDistance) {
+					index = p;
+					minDistance = d;
+				}
+			}
 		}
 		return index;
 	}
 	
-	public int getColor(int index){
+	public static int getColor(int index){
 		return palette[index];
 	}
 } 

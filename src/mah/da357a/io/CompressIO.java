@@ -1,10 +1,14 @@
 package mah.da357a.io;
 
+import mah.da357a.transforms.LimitedPalette;
 import mah.da357a.transforms.MoveToFront;
 import mah.da357a.transforms.RunLengthEncode;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -77,6 +81,26 @@ public class CompressIO {
 	            if (in.read() != HEADER[i]) { throw new InvalidCompressFileException(); }
 	        }
 	        
+	        // Read width and height
+	        int width  = read4bytes(in);
+	        int height = read4bytes(in);
+	        
+	        byte[] buffer = new byte[4096];
+	        
+	        byte[] data = null;
+	        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+	        	
+	        	int length = -1;
+	        	while ((length = in.read(buffer)) != -1) {
+	        		bos.write(buffer, 0, length);
+	        	}
+	        	
+	        	data = bos.toByteArray();
+	        	
+	        }
+	        
+	        img = decompress(width, height, data);
+	        
         }
         
         return img;
@@ -89,8 +113,10 @@ public class CompressIO {
     private static byte[] compress(BufferedImage image){
         byte[] array = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
 
-        array = new MoveToFront().apply(array);
-
+        array = LimitedPalette.apply(array);
+        
+        //  MTF & RLE method
+        /*
         MoveToFront mtf = new MoveToFront();
 
         array = mtf.apply(array);
@@ -98,6 +124,7 @@ public class CompressIO {
         RunLengthEncode rle = new RunLengthEncode();
 
         array = rle.apply(array);
+        */
 
         return array;
     }
@@ -106,8 +133,28 @@ public class CompressIO {
      * @param bytes
      * @return
      */
-    private static BufferedImage decompress(byte[] bytes){
-    	return null;
+    private static BufferedImage decompress(int width, int height, byte[] bytes){
+    	BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    	WritableRaster raster = img.getRaster();
+    	
+    	System.out.println("Bytes (compressed) = " + bytes.length);
+    	
+    	bytes = LimitedPalette.revert(bytes);
+    	
+    	System.out.println("Bytes (decompressed) = " + bytes.length);
+    	System.out.println("Pixels (3bytes/p) = " + (bytes.length / 3));
+    	
+    	int i = 0;
+
+    	for (int y = 0; y < height; y++) {
+    		for (int x = 0; x < width; x++) {
+    			raster.setPixel(x, y, new int[] {bytes[i] & 0xFF, bytes[i + 1] & 0xFF, bytes[i + 2] & 0xFF});
+    			
+    			i += 3;
+    		}
+    	}
+    	
+    	return img;
     }
 
     /**
@@ -122,5 +169,34 @@ public class CompressIO {
         out.write((v >>> 2*8) & 0xFF);
         out.write((v >>> 1*8) & 0xFF);
         out.write((v >>> 0*8) & 0xFF);
+    }
+    
+    /**
+     * Reads an int as 4 bytes, big endian.
+     * 
+     * @param in Stream to read from
+     * @return Int read from stream
+     * @throws IOException
+     */
+    private static int read4bytes(InputStream in) throws IOException {
+        int b, v = 0;
+        /*
+        b = in.read(); if (b < 0) { throw new EOFException(); }
+        v = b << 3*8;
+        b = in.read(); if (b < 0) { throw new EOFException(); }
+        v |= b << 2*8;
+        b = in.read(); if (b < 0) { throw new EOFException(); }
+        v |= b << 1*8;
+        b = in.read(); if (b < 0) { throw new EOFException(); }
+        v |= b;
+        */
+
+        for (int i = 3; i >= 0; i--) {
+            b = in.read();
+            if (b < 0)  { throw new EOFException(); }
+            v |= b << i*8;
+        }
+
+        return v;
     }
 }

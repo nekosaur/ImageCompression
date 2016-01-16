@@ -17,7 +17,7 @@ public class TestPNG2CIF {
 			System.out.println(img.getType());
 			System.out.println();
 			
-			CompressIO.write(img, new File("resources/cartoon.cif"));
+			CompressIO.write(img, new File("c:/users/ae6662/documents/resources/cartoon.cif"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
