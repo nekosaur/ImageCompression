@@ -46,4 +46,19 @@ public class Palette {
 			, 0xbcbcbc , 0xc6c6c6 , 0xd0d0d0 , 0xdadada , 0xe4e4e4 , 0xeeeeee
 	};
 	
+	public int getCorrespondingColorIndex(int r, int g, int b){
+		int index = -1;
+		if(r == 0 && g == 0 && b == 0){
+			index = 0;
+		}else if(r == g && r == b){//All colors have same value, this means it's grayscale. (indexes 232-255, 24 different colors)			
+			index = 232 + ((r + g + b)/ 765*24); 
+		}else{ //not grayscale. (indexes 16-231, 216 different colors)
+			index = 16 + ((r + g + b)/ 765*216);
+		}
+		return index;
+	}
+	
+	public int getColor(int index){
+		return palette[index];
+	}
 } 
