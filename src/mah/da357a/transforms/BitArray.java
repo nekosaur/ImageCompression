@@ -12,11 +12,21 @@ public class BitArray {
     private byte bitX8[] = null;
     private int index = 0;
 
+    /**
+     * Constructs a bit array with the specified index
+     * 
+     * @param size
+     */
     public BitArray(int size) {
         //bitX8 = new byte[size / 8 + (size % 8 == 0 ? 0 : 1)];
         bitX8 = new byte[size];
     }
 
+    /**
+     * Constructs a bit array representing all the bits in the specified byte array.
+     * 
+     * @param array
+     */
     public BitArray(byte[] array) {
         bitX8 = new byte[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -24,18 +34,38 @@ public class BitArray {
         }
     }
     
+    /**
+     * Sets the index position
+     * 
+     * @param index
+     */
     public void setPosition(int index) {
     	this.index = index;
     }
     
+    /**
+     * @return The Index position
+     */
     public int getPosition() {
     	return index;
     }
 
+    /**
+     * Returns the bit at the specified position
+     * 
+     * @param pos
+     * @return
+     */
     public boolean getBit(int pos) {
         return (bitX8[pos / 8] & (1 << (pos % 8))) != 0;
     }
 
+    /**
+     * Sets the bit to the specified value at the specified position.
+     * 
+     * @param pos
+     * @param b
+     */
     public void setBit(int pos, boolean b) {
         byte b8 = bitX8[pos / 8];
         byte posBit = (byte) (1 << (pos % 8));
@@ -47,6 +77,11 @@ public class BitArray {
         bitX8[pos / 8] = b8;
     }
     
+    /**
+     * Writes the int value using just one byte.
+     * 
+     * @param value
+     */
     public void writeByte(int value) {
     	/*
     	for (int i = 8; i > 0; i--) {
@@ -59,12 +94,22 @@ public class BitArray {
     	
     }
     
+    /**
+     * Reads the byte at the current index position.
+     * 
+     * @return
+     */
     public byte readByte() {
     	byte b = bitX8[index++];
     	
     	return b;
     }
     
+    /**
+     * Uses readByte, but translates it to int before returning.
+     * 
+     * @return
+     */
     public int readInt() {
     	
     	int v = 0;
@@ -77,6 +122,11 @@ public class BitArray {
     	return v;
     }
     
+    /**
+     * Writes the specified int
+     * 
+     * @param value
+     */
     public void writeInt(int value) {
     	/*
     	for (int i = 32; i > 0; i--) {
@@ -92,6 +142,12 @@ public class BitArray {
     	
     }
 
+    /**
+     * Writes the specified bit value to the specified pos
+     * 
+     * @param pos
+     * @param value
+     */
     public void write(int pos, byte value) {
 
         for (int i = 8; i > 0; i--) {
@@ -101,6 +157,13 @@ public class BitArray {
         }
     }
 
+    /**
+     * writes the specified bit value numBits times, starting at pos.
+     * 
+     * @param pos
+     * @param numBits
+     * @param value
+     */
     public void write(int pos, int numBits, int value) {
 
         for (int i = numBits; i > 0; i--) {
@@ -110,10 +173,16 @@ public class BitArray {
         }
     }
 
+    /**
+     * @return the length of the bit array
+     */
     public int getLength() {
         return bitX8.length * 8;
     }
 
+    /**
+     * @return the bit array represented in a byte array
+     */
     public byte[] toByteArray() {
         return bitX8;
     }

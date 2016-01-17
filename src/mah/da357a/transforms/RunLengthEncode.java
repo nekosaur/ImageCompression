@@ -7,6 +7,13 @@ import java.util.List;
 
 public class RunLengthEncode {
 
+	/**
+	 * Applies RLE to a byte sequence. Specifically on the binary sequence. Turned out to be not effective. (Even counter productive)
+	 * Methods have no comments due too they are not being used.
+	 * 
+	 * @param bytes
+	 * @return
+	 */
 	public static byte[] apply(byte[] bytes) {
 		List<BytePair> pairs = new LinkedList<>();
 
