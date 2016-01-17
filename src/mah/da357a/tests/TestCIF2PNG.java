@@ -13,9 +13,9 @@ public class TestCIF2PNG {
 	public static void main(String[] args) {
 			
 		try {
-			BufferedImage img = CompressIO.read(new File("C:/Users/AE6662/Documents/resources/cartoon.cif"));
+			BufferedImage img = CompressIO.read(new File("C:/Users/AE6662/Documents/resources/green_boat.cif"));
 			
-			ImageIO.write(img, "PNG", new File("C:/Users/AE6662/Documents/resources/cartoon.png"));
+			ImageIO.write(img, "PNG", new File("C:/Users/AE6662/Documents/resources/green_boat.png"));
 			
 			
 		} catch (IOException e) {

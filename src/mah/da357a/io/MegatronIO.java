@@ -74,7 +74,7 @@ public class MegatronIO {
 	        int width  = read4bytes(in);
 	        int height = read4bytes(in);
 	
-	        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	        img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
 	        byte[] pxlBytes = new byte[3];
 	        int[] pxl = new int[3];
 	        WritableRaster imgRaster = img.getRaster();

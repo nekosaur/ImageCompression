@@ -27,6 +27,10 @@ public class BitArray {
     public void setPosition(int index) {
     	this.index = index;
     }
+    
+    public int getPosition() {
+    	return index;
+    }
 
     public boolean getBit(int pos) {
         return (bitX8[pos / 8] & (1 << (pos % 8))) != 0;
@@ -53,6 +57,24 @@ public class BitArray {
     	byte b = (byte)value;
     	bitX8[index++] = b;
     	
+    }
+    
+    public byte readByte() {
+    	byte b = bitX8[index++];
+    	
+    	return b;
+    }
+    
+    public int readInt() {
+    	
+    	int v = 0;
+    	
+    	v |= (readByte() & 0xFF) << 24;
+    	v |= (readByte() & 0xFF) << 16;
+    	v |= (readByte() & 0xFF) << 8;
+    	v |= (readByte() & 0xFF);
+    	
+    	return v;
     }
     
     public void writeInt(int value) {

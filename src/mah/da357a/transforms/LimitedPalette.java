@@ -1,11 +1,16 @@
 package mah.da357a.transforms;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.util.Arrays;
+
 import mah.da357a.ImageUtils;
 
 public class LimitedPalette {
 
-	
-	public static byte[] apply(byte[] bytes) {
+	public static byte[] apply(BufferedImage img) {
+		
+		byte[] bytes = ((DataBufferByte)img.getRaster().getDataBuffer()).getData();
 		
 		System.out.println("Bytes = " + bytes.length);
 		
@@ -13,35 +18,22 @@ public class LimitedPalette {
 		
 		BitArray bits = new BitArray(out);
 		
-		int[] palette = Palette.getPalette();
+		//int[] palette = Palette.getPalette();
+		CustomPalette cp = new CustomPalette(img);
+		//Palette cp = new Palette();
+		
+		int[] palette = cp.getPalette();
 		
 		for (int c : palette)
 			bits.writeInt(c);
 		
 		int index = -1;
 		for (int i = 0; i < bytes.length; i += 3) {
-			
-			int c = ImageUtils.toInt(bytes[i] & 0xFF, bytes[i + 1] & 0xFF, bytes[i + 2] & 0xFF);
-
-			double minDistance = Double.MAX_VALUE;
-			
+			index = cp.getCorrespondingColorIndex(bytes[i + 2] & 0xFF, bytes[i + 1] & 0xFF, bytes[i] & 0xFF);
 			/*
-			for (int p = 0; p < palette.length; p++) {
-				double d = ImageUtils.distance(palette[p], c);
-				if (d < minDistance) {
-					index = p;
-					minDistance = d;
-				}
+			if(i % 50000 == 0){
+				System.out.println("Jag jobbar " + i);
 			}*/
-			
-			/*
-			if (i % 16 == 0) {
-				System.out.println((bytes[i] & 0xFF) + ","+ (bytes[i + 1] & 0xFF) +","+ (bytes[i + 2] & 0xFF));
-				System.out.println(Palette.getCorrespondingColorIndex(bytes[i] & 0xFF, bytes[i + 1] & 0xFF, bytes[i + 2] & 0xFF));
-			}
-			*/
-			index = Palette.getCorrespondingColorIndex(bytes[i] & 0xFF, bytes[i + 1] & 0xFF, bytes[i + 2] & 0xFF);
-			
 			bits.writeByte(index);
 		}
 		
@@ -52,12 +44,14 @@ public class LimitedPalette {
 	
 	public static byte[] revert(byte[] bytes) {
 		
+		CustomPalette cp = new CustomPalette(Arrays.copyOfRange(bytes, 0, 1024));
+		
 		byte[] out = new byte[(bytes.length - (256*4)) * 3];
 		
 		int s = -1;
 		for (int i = 256*4; i < bytes.length; i++) {
 			
-			int c = Palette.getColor(bytes[i] & 0xFF);
+			int c = cp.getColor(bytes[i] & 0xFF);
 			
 			out[++s] = (byte)((c >>> 16) & 0xFF);  
 			out[++s] =  (byte)((c >>> 8) & 0xFF);

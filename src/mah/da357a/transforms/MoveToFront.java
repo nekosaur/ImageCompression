@@ -7,40 +7,77 @@ package mah.da357a.transforms;
  */
 public class MoveToFront {
 
-	public byte[] apply(byte[] bytes) {
+	public static byte[] apply(byte[] bytes) {
 
-		BitArray bits = new BitArray(bytes);
+		byte[] table = new byte[256];
+		for (int i = 0; i < 256; i++)
+			table[i] = (byte)(i);
 
-		/*
-		for (int i = 0; i < bits.getLength(); i++)
-			System.out.print(bits.getBit(i) == true ? 1 : 0);
-		System.out.println();
-		*/
+		byte[] out = new byte[bytes.length];
 
-		boolean zeroIsFront = true;
+		for (int i = 0; i < bytes.length; i++) {
 
-		for (int i = 0; i < bits.getLength(); i++) {
+			byte b = bytes[i];
 
-			boolean bit = bits.getBit(i);
+			int rank = find(table, b);
 
-			bits.setBit(i, zeroIsFront ? bit : !bit);
+			out[i] = (byte)rank;
 
-			zeroIsFront = zeroIsFront ? !bit : true;
-
+			if (rank > 0) {
+				table = update(table, rank);
+			}
 		}
 
-		/*
-		for (int i = 0; i < bits.getLength(); i++)
-			System.out.print(bits.getBit(i) == true ? 1 : 0);
-		System.out.println();
-		*/
-
-		return bits.toByteArray();
-
+		return out;
 	}
 
-	public byte[] revert(byte[] bytes) {
-		return apply(bytes);
+	private static byte[] update(byte[] table, int rank) {
+		byte b = table[rank];
+		for (int i = rank; i > 0; i--) {
+			table[i] = table[i - 1];
+		}
+		table[0] = b;
+
+		return table;
+	}
+
+	private static int find(byte[] table, byte entry) {
+		for (int i = 0; i < table.length; i++)
+			if (table[i] == entry)
+				return i;
+
+		return -1;
+	}
+
+	/*
+	public byte[] apply(byte[] bytes) {
+		BitArray bits = new BitArray(bytes);
+		boolean zeroIsFront = true;
+		for (int i = 0; i < bits.getLength(); i++) {
+			boolean bit = bits.getBit(i);
+			bits.setBit(i, zeroIsFront ? bit : !bit);
+			zeroIsFront = zeroIsFront ? !bit : true;
+		}
+		return bits.toByteArray();
+	}
+	*/
+
+	public static byte[] revert(byte[] bytes) {
+		byte[] table = new byte[256];
+		for (int i = 0; i < 256; i++)
+			table[i] = (byte)i;
+
+		byte[] out = new byte[bytes.length];
+
+		for (int i = 0; i < bytes.length; i++) {
+			int rank = bytes[i] & 0xFF;
+
+			out[i] = table[rank];
+
+			table = update(table, rank);
+		}
+
+		return out;
 	}
 
 }

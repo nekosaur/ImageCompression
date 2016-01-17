@@ -13,9 +13,9 @@ public class TestPNG2MTG {
 	public static void main(String[] args) {
 			
 		try {
-			BufferedImage img = ImageIO.read(new File("resources/cartoon.png"));
+			BufferedImage img = ImageIO.read(new File("resources/test.png"));
 			
-			MegatronIO.write(img, new File("resources/cartoon2.mtg"));
+			MegatronIO.write(img, new File("resources/test.mtg"));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

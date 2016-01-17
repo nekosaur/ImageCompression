@@ -111,9 +111,9 @@ public class CompressIO {
      * @return
      */
     private static byte[] compress(BufferedImage image){
-        byte[] array = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+        
 
-        array = LimitedPalette.apply(array);
+        byte[] array = LimitedPalette.apply(image);
         
         //  MTF & RLE method
         /*

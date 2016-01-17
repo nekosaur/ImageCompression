@@ -15,7 +15,7 @@ public class TestMTG2PNG {
 		try {
 			BufferedImage img = MegatronIO.read(new File("resources/cartoon.mtg"));
 			
-			ImageIO.write(img, "PNG", new File("resources/cartoon.png"));
+			ImageIO.write(img, "PNG", new File("C:/Users/AE6662/Documents/resources/cartoon.png"));
 			
 			
 		} catch (IOException e) {
