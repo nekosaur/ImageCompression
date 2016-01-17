@@ -24,13 +24,13 @@ public class TestAll {
 				
 				System.out.println("compressing " + file);
 				time = System.nanoTime();
-				CompressIO.write(img, new File("E:/tmp/resources/" + file + ".cif"));
+				CompressIO.write(img, new File("resources/" + file + ".cif"));
 				System.out.println(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - time));
 				
 				System.out.println("decompressing " + file);
 				time = System.nanoTime();
-				img = CompressIO.read(new File("E:/tmp/resources/" + file + ".cif"));
-				ImageIO.write(img, "PNG", new File("E:/tmp/resources/" + file + ".png"));
+				img = CompressIO.read(new File("resources/" + file + ".cif"));
+				ImageIO.write(img, "PNG", new File("resources/" + file + ".png"));
 				System.out.println(TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - time));
 				
 				
