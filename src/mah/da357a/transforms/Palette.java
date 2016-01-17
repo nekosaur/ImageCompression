@@ -2,11 +2,21 @@ package mah.da357a.transforms;
 
 import mah.da357a.ImageUtils;
 
+/**
+ * This class represents a standardized palette. Values 0-15 are not used in the code. Values 16-231 are the color values. And 231-255 are the grayscale color values.
+ * 
+ * http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+ * 
+ * @author ae8556
+ *
+ */
 public class Palette {
 	
 	private final static int[] palette = new int[]{
+			// 0-15 Not Used
 			   0x000000  , 0x800000  , 0x008000  , 0x808000  , 0x000080  , 0x800080  , 0x008080  , 0xc0c0c0
 			 , 0x808080  , 0xff0000 , 0x00ff00 , 0xffff00 , 0x0000ff , 0xff00ff , 0x00ffff , 0xffffff
+			// 16-231 Color values
 			 , 0x000000  , 0x000033  , 0x000066  , 0x000099  , 0x0000cc  , 0x0000ff
 			 , 0x003300  , 0x003333  , 0x003366  , 0x003399  , 0x0033cc  , 0x0033ff
 			 , 0x006600  , 0x006633  , 0x006666  , 0x006699  , 0x0066cc  , 0x0066ff
@@ -43,23 +53,33 @@ public class Palette {
 			, 0xff9900 , 0xff9933 , 0xff9966 , 0xff9999 , 0xff99cc , 0xff99ff
 			, 0xffcc00 , 0xffcc33 , 0xffcc66 , 0xffcc99 , 0xffcccc , 0xffccff
 			, 0xffff00 , 0xffff33 , 0xffff66 , 0xffff99 , 0xffffcc , 0xffffff
+		// 231-255 Grayscale values
 			, 0x080808 , 0x121212 , 0x1c1c1c , 0x262626 , 0x303030 , 0x3a3a3a
 			, 0x444444 , 0x4e4e4e , 0x585858 , 0x606060 , 0x666666 , 0x767676
 			, 0x808080 , 0x8a8a8a , 0x949494 , 0x9e9e9e , 0xa8a8a8 , 0xb2b2b2
 			, 0xbcbcbc , 0xc6c6c6 , 0xd0d0d0 , 0xdadada , 0xe4e4e4 , 0xeeeeee
 	};
 	
+	/**
+	 * @return The palette containing the 256 color values
+	 */
 	public static int[] getPalette() {
 		return palette;
 	}
 	
+	/**
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @return The index for the corresponding (the closest) color for the specified index.
+	 */
 	public static int getCorrespondingColorIndex(int r, int g, int b){
 		int index = -1;
 		if(r == 0 && g == 0 && b == 0){
 			index = 0;
-		}else if(r == g && r == b){//All colors have same value, this means it's grayscale. (indexes 232-255, 24 different colors)			
+		}else if(r == g && r == b){	//All colors have same value, this means it's grayscale. (indexes 232-255, 24 different colors)			
 			index = 232 + (int)(((double)(r + g + b)/765)*23); 
-		}else{ //not grayscale. (indexes 16-231, 216 different colors)
+		}else{ 						//not grayscale. (indexes 16-231, 216 different colors)
 			
 			int rIndex = Math.round(((r / 255f) * 5));
 			int gIndex = Math.round(((g / 255f) * 5));
@@ -71,6 +91,10 @@ public class Palette {
 		return index;
 	}
 	
+	/**
+	 * @param index
+	 * @return The color at the specified index
+	 */
 	public static int getColor(int index){
 		return palette[index];
 	}

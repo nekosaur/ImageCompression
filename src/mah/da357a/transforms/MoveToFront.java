@@ -1,7 +1,8 @@
 package mah.da357a.transforms;
 
 /**
- * Move-to-Front transform
+ * Move-to-Front transform, used to MTF-encode the byte sequence from RLE, specifically on the binary sequence. Turned out to be not effective. (Even counter productive)
+	 * Methods have no comments due too they are not being used.
  *
  * @author Filip Harald & Albert Kaaman
  */
