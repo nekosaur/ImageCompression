@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Filip Harald & Albert Kaaman
+ *
+ */
 public class RunLengthEncode {
 
 	/**

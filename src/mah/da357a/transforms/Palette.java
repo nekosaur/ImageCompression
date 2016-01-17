@@ -2,6 +2,12 @@ package mah.da357a.transforms;
 
 import mah.da357a.ImageUtils;
 
+/**
+ * This class represents a standardized palette
+ * 
+ * @author ae8556
+ *
+ */
 public class Palette {
 	
 	private final static int[] palette = new int[]{
@@ -49,10 +55,19 @@ public class Palette {
 			, 0xbcbcbc , 0xc6c6c6 , 0xd0d0d0 , 0xdadada , 0xe4e4e4 , 0xeeeeee
 	};
 	
+	/**
+	 * @return The palette containing the 256 color values
+	 */
 	public static int[] getPalette() {
 		return palette;
 	}
 	
+	/**
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @return The index for the corresponding (the closest) color for the specified index.
+	 */
 	public static int getCorrespondingColorIndex(int r, int g, int b){
 		int index = -1;
 		if(r == 0 && g == 0 && b == 0){
@@ -71,6 +86,10 @@ public class Palette {
 		return index;
 	}
 	
+	/**
+	 * @param index
+	 * @return The color at the specified index
+	 */
 	public static int getColor(int index){
 		return palette[index];
 	}
