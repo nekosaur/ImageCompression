@@ -10,7 +10,7 @@ import mah.da357a.io.CompressIO;
 
 public class TestPNG2CIF {
 	public static void main(String[] args) {
-		String file = "green_boat";
+		String file = "cartoon";
 		try {
 			BufferedImage img = ImageIO.read(new File("resources/" + file + ".png"));
 

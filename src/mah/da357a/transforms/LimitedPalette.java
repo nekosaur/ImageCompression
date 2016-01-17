@@ -29,7 +29,8 @@ public class LimitedPalette {
 		
 		int index = -1;
 		for (int i = 0; i < bytes.length; i += 3) {
-			index = cp.getCorrespondingColorIndex(bytes[i + 2] & 0xFF, bytes[i + 1] & 0xFF, bytes[i] & 0xFF);
+			//index = cp.getCorrespondingColorIndex(bytes[i + 2] & 0xFF, bytes[i + 1] & 0xFF, bytes[i] & 0xFF);
+			index = cp.getIndex(bytes[i + 2] & 0xFF, bytes[i + 1] & 0xFF, bytes[i] & 0xFF);
 			/*
 			if(i % 50000 == 0){
 				System.out.println("Jag jobbar " + i);
@@ -50,6 +51,9 @@ public class LimitedPalette {
 		
 		int s = -1;
 		for (int i = 256*4; i < bytes.length; i++) {
+			int x = (i-256*4) % 608;
+			int y = (i-256*4)/608;
+			//System.out.println("x="+((i-256*4) % 608) + ", y=" + (i-256*4)/608);
 			
 			int c = cp.getColor(bytes[i] & 0xFF);
 			

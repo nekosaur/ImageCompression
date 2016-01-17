@@ -22,7 +22,7 @@ public class TestCustomPalette {
 		
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("resources/green_boat.png"));
+			BufferedImage img = ImageIO.read(new File("resources/cartoon.png"));
 			
 			CustomPalette p = new CustomPalette(img);
 			
