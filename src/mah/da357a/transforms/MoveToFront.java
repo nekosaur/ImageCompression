@@ -2,7 +2,7 @@ package mah.da357a.transforms;
 
 /**
  * Move-to-Front transform, used to MTF-encode the byte sequence from RLE, specifically on the binary sequence. Turned out to be not effective. (Even counter productive)
-	 * Methods have no comments due too they are not being used.
+ * Methods have no comments due to not being used at the moment.
  *
  * @author Filip Harald & Albert Kaaman
  */
@@ -49,19 +49,6 @@ public class MoveToFront {
 
 		return -1;
 	}
-
-	/*
-	public byte[] apply(byte[] bytes) {
-		BitArray bits = new BitArray(bytes);
-		boolean zeroIsFront = true;
-		for (int i = 0; i < bits.getLength(); i++) {
-			boolean bit = bits.getBit(i);
-			bits.setBit(i, zeroIsFront ? bit : !bit);
-			zeroIsFront = zeroIsFront ? !bit : true;
-		}
-		return bits.toByteArray();
-	}
-	*/
 
 	public static byte[] revert(byte[] bytes) {
 		byte[] table = new byte[256];

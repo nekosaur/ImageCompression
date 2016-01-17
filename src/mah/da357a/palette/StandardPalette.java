@@ -1,16 +1,14 @@
-package mah.da357a.transforms;
-
-import mah.da357a.ImageUtils;
+package mah.da357a.palette;
 
 /**
  * This class represents a standardized palette. Values 0-15 are not used in the code. Values 16-231 are the color values. And 231-255 are the grayscale color values.
  * 
  * http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
  * 
- * @author ae8556
+ * @author Filip Harald
  *
  */
-public class Palette {
+public class StandardPalette implements Palette{
 	
 	private final static int[] palette = new int[]{
 			// 0-15 Not Used
@@ -63,7 +61,7 @@ public class Palette {
 	/**
 	 * @return The palette containing the 256 color values
 	 */
-	public static int[] getPalette() {
+	public int[] getPalette() {
 		return palette;
 	}
 	
@@ -73,7 +71,7 @@ public class Palette {
 	 * @param b
 	 * @return The index for the corresponding (the closest) color for the specified index.
 	 */
-	public static int getCorrespondingColorIndex(int r, int g, int b){
+	public int getIndex(int r, int g, int b){
 		int index = -1;
 		if(r == 0 && g == 0 && b == 0){
 			index = 0;
@@ -95,7 +93,7 @@ public class Palette {
 	 * @param index
 	 * @return The color at the specified index
 	 */
-	public static int getColor(int index){
+	public int getColor(int index){
 		return palette[index];
 	}
 } 

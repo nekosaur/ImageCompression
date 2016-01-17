@@ -1,11 +1,11 @@
 package mah.da357a.io;
 
-import mah.da357a.transforms.LimitedPalette;
+import javafx.scene.shape.MoveTo;
+import mah.da357a.transforms.LimitPalette;
 import mah.da357a.transforms.MoveToFront;
 import mah.da357a.transforms.RunLengthEncode;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
@@ -111,22 +111,15 @@ public class CompressIO {
      * @return
      */
     private static byte[] compress(BufferedImage image){
-        
 
-        byte[] array = LimitedPalette.apply(image);
-        
-        //  MTF & RLE method
+        byte[] bytes = LimitPalette.apply(image);
+
         /*
-        MoveToFront mtf = new MoveToFront();
-
-        array = mtf.apply(array);
-
-        RunLengthEncode rle = new RunLengthEncode();
-
-        array = rle.apply(array);
+        bytes = MoveToFront.apply(bytes);
+        bytes = RunLengthEncode.apply(bytes);
         */
 
-        return array;
+        return bytes;
     }
     
     /**
@@ -138,9 +131,14 @@ public class CompressIO {
     	WritableRaster raster = img.getRaster();
     	
     	System.out.println("Bytes (compressed) = " + bytes.length);
-    	
-    	bytes = LimitedPalette.revert(bytes);
-    	
+
+        /*
+        bytes = RunLengthEncode.revert(bytes);
+        bytes = MoveToFront.revert(bytes);
+        */
+
+        bytes = LimitPalette.revert(bytes);
+
     	System.out.println("Bytes (decompressed) = " + bytes.length);
     	System.out.println("Pixels (3bytes/p) = " + (bytes.length / 3));
     	

@@ -14,14 +14,11 @@ public class TestPNG2CIF {
 		try {
 			BufferedImage img = ImageIO.read(new File("resources/" + file + ".png"));
 
-			System.out.println(img.getType());
-			System.out.println();
+			CompressIO.write(img, new File("e:/tmp/resources/" + file + ".cif"));
 			
-			CompressIO.write(img, new File("c:/users/ae6662/documents/resources/" + file + ".cif"));
+			img = CompressIO.read(new File("e:/tmp/resources/" + file + ".cif"));
 			
-			img = CompressIO.read(new File("c:/users/ae6662/documents/resources/" + file + ".cif"));
-			
-			ImageIO.write(img, "PNG", new File("c:/users/ae6662/documents/resources/" + file + ".png"));
+			ImageIO.write(img, "PNG", new File("e:/tmp/resources/" + file + ".png"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

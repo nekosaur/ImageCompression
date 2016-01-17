@@ -1,19 +1,12 @@
 package mah.da357a.tests;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import mah.da357a.ImageUtils;
-import mah.da357a.transforms.CustomPalette;
+import mah.da357a.palette.CustomPalette;
 
 public class TestCustomPalette {
 
@@ -22,7 +15,7 @@ public class TestCustomPalette {
 		
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("resources/cartoon.png"));
+			BufferedImage img = ImageIO.read(new File("resources/yellow_flower.png"));
 			
 			CustomPalette p = new CustomPalette(img);
 			

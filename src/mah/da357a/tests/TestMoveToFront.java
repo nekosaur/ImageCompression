@@ -2,32 +2,36 @@ package mah.da357a.tests;
 
 import mah.da357a.transforms.MoveToFront;
 
-import java.util.BitSet;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
 
 /**
- * Created by nekosaur on 2016-01-15.
+ * NOTE TO SELF! Make sure -ea JVM option is enabled!
+ *
+ * @author Albert Kaaman
  */
 public class TestMoveToFront {
 
     public static void main(String[] args) {
 
-        byte[] bytes = new byte[] { Byte.parseByte("20"), Byte.parseByte("83") };
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("resources/cartoon.png"));
 
-        System.out.println(bytes.length);
-        System.out.println(BitSet.valueOf(bytes).length());
-        BitSet set = BitSet.valueOf(bytes);
+            byte[] bytes = ((DataBufferByte)img.getRaster().getDataBuffer()).getData();
 
-        //System.out.println(String.format("%8s", Integer.toBinaryString(bytes[0])).replace(' ', '0'));
+            byte[] mtf = MoveToFront.apply(bytes);
+            mtf = MoveToFront.revert(mtf);
+
+            TestUtils.assertArrays(bytes, mtf);
 
 
-        MoveToFront mtf = new MoveToFront();
-
-        bytes = mtf.apply(bytes);
-
-        bytes = mtf.revert(bytes);
-
-        //System.out.println(String.format("%8s", Integer.toBinaryString(bytes[0])).replace(' ', '0'));
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
