@@ -20,6 +20,7 @@ import mah.da357a.ImageUtils;
 public class CustomPalette {
 
 	public int[] palette = new int[256];
+	public int paletteColorSize = 215;//indexes 16-231 Excluding grayscale and truecolours
 	
 	public CustomPalette(byte[] bytes) {
 		
@@ -86,7 +87,10 @@ public class CustomPalette {
 		palette[0] = sorted.get(0);
 		int counter = 1;
 		boolean add = false;
-		for (int i = 0; i < sorted.size() && counter < 232; i++) {
+		for(int i = 0; i < 16; i++){
+			palette[i] = 0;
+		}
+		for (int i = 16; i < sorted.size() && counter < 232; i++) {
 			//System.out.println(counter);
 			add = false;
 			
@@ -115,24 +119,74 @@ public class CustomPalette {
 			palette[i] = ImageUtils.toInt(intensity, intensity, intensity);
 		}
 		
-		int r = ImageUtils.toInt(128, 128, 128);
-		palette = Arrays.stream(palette)
+		sort();
+		writePalette();
+		
+	}
+	
+	/**
+	 * This changes the acutual palatte
+	 */
+	private void sort() {
+		int[] sortedRed = sortPaletteRed();
+		int[] sortedGreen = sortPaletteGreen(sortedRed);
+		int[] sortedBlue = sortPaletteBlue(sortedGreen);
+		for(int i = 16; i < paletteColorSize; i++){
+			palette[i] = sortedBlue[i-16];
+		}
+	}
+
+
+	private int[] sortPaletteRed() {
+		int[] sorted = new int[paletteColorSize];
+		for(int i = 0; i < paletteColorSize; i++){
+			sorted[i] = palette[i+16]; 
+		}
+		sorted = Arrays.stream(sorted)
 					.boxed()
 					.sorted((a, b) -> {
-						double d = ImageUtils.distanceInLAB(r, a) - ImageUtils.distanceInLAB(r, b);
-						if (d < 0)
-							return -1;
-						else if (d > 0)
-							return 1;
-						else
-							return 0;
-							
+						return ((a >> 16) & 0xFF) - ((b >> 16) & 0xFF);
 					})
 					.mapToInt(i -> i)
 					.toArray();
+		return sorted;
+	}
+	
+	private int[] sortPaletteGreen(int[] sortedRed) {
+		int[] sorted = sortedRed.clone();
+		for(int j = 0; j < sorted.length; j += 36){
+			int[] tempSort = Arrays.copyOfRange(sorted, j, j+35);
+			tempSort = Arrays.stream(tempSort)
+					.boxed()
+					.sorted((a, b) -> {
+						return ((a >> 8) & 0xFF) - ((b >> 8) & 0xFF);
+					})
+					.mapToInt(i -> i)
+					.toArray();
+			for(int k = 0; k < tempSort.length; k++){
+				sorted[j+k] = tempSort[k];
+			}
+		}
 		
-		writePalette();
-		
+		return sorted;
+	}
+
+	private int[] sortPaletteBlue(int[] sortedGreen) {
+		int[] sorted = sortedGreen.clone();
+		for(int j = 0; j < sorted.length; j += 6){
+			int[] tempSort = Arrays.copyOfRange(sorted, j, j+5);
+			tempSort = Arrays.stream(tempSort)
+					.boxed()
+					.sorted((a, b) -> {
+						return ((a) & 0xFF) - ((b) & 0xFF);
+					})
+					.mapToInt(i -> i)
+					.toArray();
+			for(int k = 0; k < tempSort.length; k++){
+				sorted[j+k] = tempSort[k];
+			}
+		}
+		return sorted;
 	}
 	
 	public int getColor(int index){
@@ -177,8 +231,5 @@ public class CustomPalette {
 		}
 		
 	}
-	
-	
-	
 	
 }
